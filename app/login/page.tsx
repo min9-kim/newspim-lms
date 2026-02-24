@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { useState, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { LoginButton } from "@/components/common/LoginButton";
 import { signInWithGoogle, initAuthListener } from "@/services/authService";
 import { useAuthStore } from "@/hooks/useAuth";
 import Image from "next/image";
@@ -17,17 +17,26 @@ const GoogleIcon = () => (
   </svg>
 );
 
-export default function LoginPage() {
+function LoginContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { setUser, user } = useAuthStore();
+
+  // 쿼리 파라미터에서 에러 확인
+  useEffect(() => {
+    const errorParam = searchParams.get("error");
+    if (errorParam === "unauthorized") {
+      setError("접근 권한이 없습니다. 관리자에게 문의하세요.");
+    }
+  }, [searchParams]);
 
   // 이미 로그인된 경우 리다이렉트
   useEffect(() => {
     if (user) {
       if (user.role === "instructor") {
-        router.push("/admin");
+        router.push("/instructor-home");
       } else {
         router.push("/home");
       }
@@ -59,7 +68,7 @@ export default function LoginPage() {
         
         // 역할에 따른 리다이렉트
         if (authUser.role === "instructor") {
-          router.push("/admin");
+          router.push("/instructor-home");
         } else {
           router.push("/home");
         }
@@ -135,16 +144,13 @@ export default function LoginPage() {
             )}
 
             {/* Google 로그인 버튼 */}
-            <Button
+            <LoginButton
               onClick={handleGoogleLogin}
               disabled={isLoading}
-              variant="outline"
-              className="w-full py-6 border-gray-300 hover:bg-gray-50 font-medium"
-              size="lg"
             >
               <GoogleIcon />
               {isLoading ? "로그인 중..." : "Google 계정으로 로그인하기"}
-            </Button>
+            </LoginButton>
 
             {/* 안내 문구 */}
             <p className="mt-6 text-center text-xs text-gray-400">
@@ -154,5 +160,13 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">로딩 중...</div>}>
+      <LoginContent />
+    </Suspense>
   );
 }

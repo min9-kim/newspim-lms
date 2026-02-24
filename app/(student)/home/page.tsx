@@ -1,8 +1,15 @@
+import { NOTION_PAGES } from "@/constants/notionPages";
+
 export default function HomePage() {
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">홈</h1>
-      <p>여기에 Notion 페이지가 임베딩됩니다.</p>
+    <div className="h-full">
+      <iframe 
+        src={NOTION_PAGES.home} 
+        width="100%" 
+        height="100%"
+        style={{ minHeight: "calc(100vh - 48px)", border: "none" }}
+        allowFullScreen
+      />
     </div>
   );
 }

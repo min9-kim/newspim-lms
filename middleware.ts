@@ -2,13 +2,13 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 // 공개 경로 (로그인 필요 없음)
-const publicRoutes = ["/login", "/unauthorized", "/api/auth"];
+const publicRoutes = ["/login", "/api/auth"];
 
 // 학생 전용 경로
 const studentRoutes = ["/home", "/learning", "/lesson", "/practice", "/quiz", "/calendar", "/notice"];
 
 // 강사 전용 경로
-const instructorRoutes = ["/admin"];
+const instructorRoutes = ["/instructor-home", "/instructor-students", "/instructor-calendar", "/instructor-notice"];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -45,11 +45,11 @@ export async function middleware(request: NextRequest) {
     const isInstructorRoute = instructorRoutes.some(route => pathname.startsWith(route));
 
     if (isStudentRoute && role !== "student" && role !== "instructor") {
-      return NextResponse.redirect(new URL("/unauthorized", request.url));
+      return NextResponse.redirect(new URL("/login?error=unauthorized", request.url));
     }
 
     if (isInstructorRoute && role !== "instructor") {
-      return NextResponse.redirect(new URL("/unauthorized", request.url));
+      return NextResponse.redirect(new URL("/login?error=unauthorized", request.url));
     }
 
     return NextResponse.next();
