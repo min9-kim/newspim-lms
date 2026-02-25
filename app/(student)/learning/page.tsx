@@ -13,7 +13,7 @@ interface Session {
   hasPractice: boolean;
   practiceTotalItems: number;
   hasQuiz: boolean;
-  notionPageId: string;
+  notionUrl: string;
 }
 
 interface StudentProgress {
@@ -159,7 +159,7 @@ export default function LearningPage() {
     return progress?.quizzes.includes(sessionId) ? "completed" : "not_started";
   };
 
-  // 진도율 계산
+  // 진도율 계산 (전체 12주차 기준)
   const calculateProgressRate = (): number => {
     if (!progress || sessions.length === 0) return 0;
 
@@ -167,22 +167,20 @@ export default function LearningPage() {
     let completedItems = 0;
 
     sessions.forEach((session) => {
-      if (session.week <= currentWeek) {
-        const sessionId = `${session.week}-${session.session}`;
-        
-        if (session.hasPractice) {
-          totalItems += session.practiceTotalItems;
-          const practiceProgress = progress.practices[sessionId];
-          if (practiceProgress) {
-            completedItems += practiceProgress.completed.length;
-          }
+      const sessionId = `${session.week}-${session.session}`;
+      
+      if (session.hasPractice) {
+        totalItems += session.practiceTotalItems;
+        const practiceProgress = progress.practices[sessionId];
+        if (practiceProgress) {
+          completedItems += practiceProgress.completed.length;
         }
+      }
 
-        if (session.hasQuiz) {
-          totalItems += 1;
-          if (progress.quizzes.includes(sessionId)) {
-            completedItems += 1;
-          }
+      if (session.hasQuiz) {
+        totalItems += 1;
+        if (progress.quizzes.includes(sessionId)) {
+          completedItems += 1;
         }
       }
     });
@@ -242,7 +240,7 @@ export default function LearningPage() {
                 key={sessionId}
                 week={session.week}
                 session={session.session}
-                lessonUrl={session.notionPageId || undefined}
+                lessonUrl={session.notionUrl || undefined}
                 practiceStatus={getPracticeStatus(sessionId, session.practiceTotalItems)}
                 practiceProgress={
                   practiceProgress

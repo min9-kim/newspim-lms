@@ -29,28 +29,28 @@ export function WeekProgressBar({
   const getSessionDotColor = (status: SessionStatus["status"]) => {
     switch (status) {
       case "completed":
-        return "bg-green-500";
+        return "bg-green-400";
       case "in_progress":
-        return "bg-yellow-400";
+        return "bg-yellow-300";
       case "not_started":
-        return "bg-gray-300";
+        return "bg-gray-200";
       default:
-        return "bg-gray-300";
+        return "bg-gray-200";
     }
   };
 
   const getDefaultDots = (weekStatus: WeekProgress["status"]) => {
     switch (weekStatus) {
       case "completed":
-        return ["bg-green-500", "bg-green-500", "bg-green-500"];
+        return ["bg-green-400", "bg-green-400", "bg-green-400"];
       case "in_progress":
-        return ["bg-green-500", "bg-red-400", "bg-yellow-400"];
+        return ["bg-green-400", "bg-red-300", "bg-yellow-300"];
       case "incomplete":
-        return ["bg-red-400", "bg-red-400", "bg-red-400"];
+        return ["bg-red-300", "bg-red-300", "bg-red-300"];
       case "future":
-        return ["bg-gray-300", "bg-gray-300", "bg-gray-300"];
+        return ["bg-gray-200", "bg-gray-200", "bg-gray-200"];
       default:
-        return ["bg-gray-300", "bg-gray-300", "bg-gray-300"];
+        return ["bg-gray-200", "bg-gray-200", "bg-gray-200"];
     }
   };
 
@@ -71,7 +71,7 @@ export function WeekProgressBar({
 
   return (
     <div className="bg-white rounded-2xl p-6 shadow-sm">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center pb-4 border-b border-gray-200">
         <h2 className="text-lg font-semibold">주차별 진도</h2>
         <div className="flex items-center gap-4 text-sm">
           <div className="flex items-center gap-1.5">
@@ -90,7 +90,7 @@ export function WeekProgressBar({
       </div>
 
       {/* 수평 레이아웃: 점점점 1 점점점 2 점점점 3 ... 점점점 12 */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between pt-6 pb-2">
         {weeks.map((week) => {
           const dots = week.sessions 
             ? week.sessions.map(s => getSessionDotColor(s.status))

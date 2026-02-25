@@ -58,11 +58,11 @@ export function SessionCard({
 
   return (
     <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
-      <h3 className="text-base font-semibold mb-4">
+      <h3 className="text-base font-semibold pb-3 border-b border-gray-200">
         {week}-{session}회차
       </h3>
 
-      <div className="space-y-3">
+      <div className="space-y-3 pt-4">
         {/* 수업 */}
         <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
           <div className="flex items-center gap-3">
