@@ -74,7 +74,14 @@ function LoginContent() {
         }
       }
     } catch (err: any) {
-      setError(err.message || "로그인에 실패했습니다.");
+      // 팝업 닫기 에러는 무시
+      if (err.code === "auth/popup-closed-by-user") {
+        setError("로그인이 취소되었습니다.");
+      } else if (err.code === "auth/cancelled-popup-request") {
+        setError(""); // 아무 메시지도 표시하지 않음
+      } else {
+        setError(err.message || "로그인에 실패했습니다.");
+      }
     } finally {
       setIsLoading(false);
     }
