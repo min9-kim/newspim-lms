@@ -1,8 +1,15 @@
+import { NOTION_PAGES } from "@/constants/notionPages";
+
 export default function InstructorCalendarPage() {
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">캘린더</h1>
-      <p>강사용 캘린더 페이지입니다.</p>
+    <div className="h-full">
+      <iframe
+        src={NOTION_PAGES.calendar}
+        width="100%"
+        height="100%"
+        style={{ minHeight: "calc(100vh - 48px)", border: "none" }}
+        allowFullScreen
+      />
     </div>
   );
 }

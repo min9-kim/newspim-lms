@@ -1,8 +1,15 @@
+import { NOTION_PAGES } from "@/constants/notionPages";
+
 export default function InstructorNoticePage() {
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">공지사항</h1>
-      <p>강사용 공지사항 페이지입니다.</p>
+    <div className="h-full">
+      <iframe
+        src={NOTION_PAGES.notice}
+        width="100%"
+        height="100%"
+        style={{ minHeight: "calc(100vh - 48px)", border: "none" }}
+        allowFullScreen
+      />
     </div>
   );
 }

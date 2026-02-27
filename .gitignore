@@ -84,6 +84,8 @@ next-env.d.ts
 
 # firebase
 .firebase/
+serviceAccountKey.json
+newspim-sub-firebase-adminsdk*.json
 
 # IDE
 .vscode/
