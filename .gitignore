@@ -93,3 +93,6 @@ newspim-sub-firebase-adminsdk*.json
 
 # OS
 Thumbs.db
+
+# scripts
+/scripts/
