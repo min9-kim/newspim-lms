@@ -75,7 +75,7 @@
 학생 이메일 등록 (로그인 권한 체크용)
 
 ```ts
-// 문서 ID: 이메일 (예: "gg7322@naver.com")
+// 문서 ID: 이메일 (예: "1234@naver.com")
 {
   // 필드 없음, 문서 존재 여부로 체크
 }
@@ -89,9 +89,9 @@
 ```ts
 // 문서 ID: Firebase Auth uid
 {
-  id: "LUwb5e25RIXuDw1RuMu5JpBzTJy2",
-  email: "gg7322@naver.com",
-  name: "김민규",
+  id: "sadfmwklekfmweaoif",
+  email: "1234@naver.com",
+  name: "뉴스핌",
   role: "student" | "instructor",
   updatedAt: Timestamp
 }
