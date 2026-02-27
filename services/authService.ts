@@ -3,13 +3,48 @@ import {
   signInWithPopup, 
   signOut as firebaseSignOut,
   onAuthStateChanged,
-  User as FirebaseUser
+  User as FirebaseUser,
+  Auth,
+  AuthProvider
 } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 
 const provider = new GoogleAuthProvider();
 provider.setCustomParameters({ prompt: 'select_account' });
+
+/**
+ * 팝업 닫기를 빠르게 감지하는 wrappedSignInWithPopup
+ * 100ms 간격으로 팝업 상태 체크 (Firebase 기본 8초 대신)
+ */
+async function wrappedSignInWithPopup(auth: Auth, provider: AuthProvider) {
+  let popupWindow: Window | null = null;
+
+  // window.open을 임시로 override하여 팝업 참조 획득
+  const originalOpen = window.open;
+  window.open = function (...args: any[]) {
+    popupWindow = originalOpen.apply(window, args as any);
+    window.open = originalOpen; // 즉시 원래대로 복구
+    return popupWindow;
+  };
+
+  let pollInterval: number | undefined;
+
+  try {
+    const popupClosedPromise = new Promise<any>((_, reject) => {
+      pollInterval = window.setInterval(() => {
+        if (popupWindow?.closed) {
+          reject({ code: 'auth/popup-closed-by-user' });
+        }
+      }, 100);
+    });
+
+    const signInPromise = signInWithPopup(auth, provider);
+    return await Promise.race([popupClosedPromise, signInPromise]);
+  } finally {
+    window.clearInterval(pollInterval);
+  }
+}
 
 export interface AuthUser {
   id: string;
@@ -40,7 +75,8 @@ export const checkUserRole = async (email: string | null): Promise<"student" | "
 // Google 로그인 - 자동으로 역할 확인
 export const signInWithGoogle = async (): Promise<AuthUser> => {
   try {
-    const result = await signInWithPopup(auth, provider);
+    // wrappedSignInWithPopup 사용: 팝업 닫기 100ms 감지
+    const result = await wrappedSignInWithPopup(auth, provider);
     const firebaseUser = result.user;
     
     if (!firebaseUser.email) {
