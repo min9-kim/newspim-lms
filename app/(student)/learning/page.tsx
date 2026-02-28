@@ -228,9 +228,9 @@ export default function LearningPage() {
       />
 
       {/* 현재 주차 섹션 */}
-      <div>
-        <h2 className="text-lg font-semibold mb-4">현재 주차 | {selectedWeek}주차</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="bg-white rounded-lg shadow-sm p-4 min-[1920px]:p-6 pb-6 min-[1920px]:pb-8 mt-4 min-[1920px]:mt-6 flex flex-col flex-1">
+        <h2 className="text-lg min-[1920px]:text-xl font-semibold mb-4 min-[1920px]:mb-5 py-2 text-gray-900">현재 주차 | {selectedWeek}주차</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 min-[1920px]:gap-4 items-stretch flex-1">
           {selectedSessions.map((session) => {
             const sessionId = `${session.week}-${session.session}`;
             const practiceProgress = progress?.practices[sessionId];

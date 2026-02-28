@@ -70,7 +70,7 @@ export function WeekProgressBar({
   };
 
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm">
+    <div className="bg-white rounded-2xl p-5 min-[1920px]:p-8 shadow-sm">
       <div className="flex justify-between items-center pb-4 border-b border-gray-200">
         <h2 className="text-lg font-semibold">주차별 진도</h2>
         <div className="flex items-center gap-4 text-sm">
