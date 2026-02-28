@@ -13,7 +13,9 @@ export default function HomePage() {
       <Head>
         <link rel="preload" href={homeUrl} as="document" />
       </Head>
-      <div className="h-full relative">
+      <div className="h-full relative overflow-hidden">
+      {/* 흰색 배너 - 시작하기 버튼 가리기 */}
+      <div className="absolute top-0 left-0 right-0 h-[45px] bg-white z-10" />
       {/* Skeleton UI + 스피너 */}
       {iframeLoading && (
         <div className="absolute inset-0 bg-white z-10 p-6">
